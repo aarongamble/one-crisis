@@ -195,21 +195,23 @@ class Search(webapp.RequestHandler):
 		#"matched_skills": "food, engineering"
 
         # Filter by distance to query
-        query_location = Distance.getlatlng(country=searchLocation)
-        closest_people = Distance.find_closest(query_location,searchResults)
+        try:
+          query_location = Distance.getlatlng(country=searchLocation)
+          closest_people = Distance.find_closest(query_location,searchResults)
+        except: closest_people = {0: searchResults}
 
-        # closest_people = {distance1: [person1,person2,...], distance2: [...]}
-
+                # closest_people = {distance1: [person1,person2,...], distance2: [...]}
+       
+       # Results is a list of dicts.  
+       # Each dict corresponds to a person with skills matching query skills, 
+       # The dicts are sorted in order of increasing distance to query location
         results = []
         for distance in sorted(closest_people.keys()):
             for person in closest_people[distance]:
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skill})
-
-
+        
         return simplejson.dumps(results)
         
-       
-
 
 
 def main():
