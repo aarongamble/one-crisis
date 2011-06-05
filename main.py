@@ -1,5 +1,6 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.api import users
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -29,10 +30,10 @@ class Search(webapp.RequestHandler):
 
 
 application = webapp.WSGIApplication(
-                                     [('/', MainPage)],
-                                     [('/people', People)],
-                                     [('/profile', Profile)],
-                                     [('/search', Search)],
+                                     [('/', MainPage),
+                                      ('/people', People),
+                                      ('/profile', Profile),
+                                      ('/search', Search)],
                                      debug=True)
 
 def main():
