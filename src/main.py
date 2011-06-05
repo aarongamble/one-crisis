@@ -49,32 +49,25 @@ class People(webapp.RequestHandler):
         
     def get(self):
         user = users.get_current_user()
+        
         id = None
         try:
             id = int(self.request.get('id'))
         except:
-            self.error(404)
+            self.redirect('/')
+            return
             
         if not id:
-            self.error(404)
+            self.redirect('/')
+            return
         
         person = Person.get_by_id(id)
         if not person:
-            template_values = {'person':    None,
-                               'user':      user,
-                               'edit':      False}
-            path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
-            self.response.out.write(template.render(path, template_values))
+            self.redirect('/')
             return
         
-        if person.user == user:
-            edit = True     # Viewing self, mark as edit
-        else:
-            edit = False
-        
         template_values = {'person':    person,
-                           'user':      user,
-                           'edit':      True}
+                           'user':      user}
         path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
         self.response.out.write(template.render(path, template_values))
         return
@@ -83,7 +76,7 @@ class People(webapp.RequestHandler):
         pass
 
 class Profile(webapp.RequestHandler):
-  #  @login_required
+    @login_required
     def get(self):
         user = users.get_current_user()
         logging.debug(user)
