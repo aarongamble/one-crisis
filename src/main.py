@@ -118,6 +118,9 @@ class Profile(webapp.RequestHandler):
         email = request.get('email')
         if email:
             person.email = email
+        address = request.get('address')
+        if address:
+            person.address = address
         
         phone = request.get('phone')
         if phone:
@@ -158,12 +161,7 @@ class Profile(webapp.RequestHandler):
         if resource_skills:
             person.resource_skills = resource_skills
             
-        person.location = distance.getlatlong(\
-          country=person.home_country,\
-          state=person.home_state,\
-          city=person.home_city,\
-          street=person.home_street,\
-          postal_code=person.home_postal_code)
+        person.location = distance.getlatlongaddr(person.address)
           
         person.put()
         

@@ -18,6 +18,17 @@ def getDistance( lat1,lng1,lat2,lng2 ):
   distance = sqrt(sum( map( lambda x: math.pow( x, 2 ), dxyz ) ) )
   return distance
   
+def getlatlongaddr(addr=''):
+  try:
+    query = addr
+    map_address = urllib.urlopen('https://maps.googleapis.com/maps/api/geocode/json?address='+query+'&sensor=false').read()
+    info = json.loads(map_address)
+    if info['status'] == 'OK':
+      return map_address #info['results'][0]
+    else: return ""
+  except: return ""
+  
+  
 def getlatlong(country='',state='',city='',street='',street_number='',postal_code=''):
   '''Returns the location information (including latitude and longitude and bounding box) for the given location information'''
   try:
@@ -27,8 +38,10 @@ def getlatlong(country='',state='',city='',street='',street_number='',postal_cod
     info = json.loads(map_address)
     if info['status'] == 'OK':
       return map_address #info['results'][0]
-    else: return 0
-  except: return 0
+    else: return ""
+  except: return ""
+  
+  
   
 def find_closest(location_json,possible_matches):
   '''Returns a dict of people close enough to the query location.  Keys are distances to query location
