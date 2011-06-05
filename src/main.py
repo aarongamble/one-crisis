@@ -125,7 +125,7 @@ class Profile(webapp.RequestHandler):
             
         home_street = request.get('home_street')
         if home_street:
-            person.home_street = home_streets
+            person.home_street = home_street
         
         home_neighborhood = request.get('home_neighborhood')
         if home_neighborhood:
@@ -151,6 +151,13 @@ class Profile(webapp.RequestHandler):
         if photo_url:
             person.photo_url = photo_url
             
+        person.location = Distance.getlatlng(\
+          country=person.home_country,\
+          state=person.home_state,\
+          city=person.home_city,\
+          street=home_street,\
+          postal_code=home_postal_code)
+          
         person.put()
         
         self.response.set_status(200)
