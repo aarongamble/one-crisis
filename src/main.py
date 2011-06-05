@@ -7,7 +7,7 @@ import os
 import logging
 from google.appengine.ext.webapp import template
 from django.utils import simplejson
-import Distance
+import distance
 
 from model import *
 
