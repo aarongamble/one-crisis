@@ -36,7 +36,10 @@ class People(webapp.RequestHandler):
         user = users.get_current_user()
         if not user:
             return None
-        
+        return People.get_user_person(user)
+    
+    @staticmethod
+    def get_user_person(user):
         person = db.Query(Person).filter('user =', user).fetch(limit=USER_PERSON_LIMIT)
         if person:
             return person[0] # Only one person for each user
@@ -97,9 +100,14 @@ class Profile(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
         
 
-    @login_required
     def post(self):
-        person = People.get_current_user_person()
+        user = users.get_current_user()
+        if not user:
+            error(403)
+        
+        person = People.get_user_person(user)
+        if person.user != user:
+            error(403)
         
         context = self.context
         
@@ -145,13 +153,8 @@ class Profile(webapp.RequestHandler):
             
         person.put()
         
-        template_values = {'user':      user,
-                           'person':    person,
-                           'edit':      True}
-        
-        path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
-        self.response.out.write(template.render(path, template_values))
-        
+        self.response.set_status(200)
+                           
         '''
         Not sure what to do with resources
         
@@ -183,7 +186,7 @@ class Search(webapp.RequestHandler):
         searchSkills = self.request.get_all('skills')
         searchLocation = self.request.get_all('location')
 
-        searchResults = Person.filter(resource_skill = searchSkills)
+        searchResults = Person.objects.filter(resource_skill__in = searchSkills)
 
 
                 #"id": "id1",
@@ -203,7 +206,7 @@ class Search(webapp.RequestHandler):
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skill})
 
 
-        return self.response.out.write(simplejson.dumps(results))
+        return simplejson.dumps(results)
         
        
 
