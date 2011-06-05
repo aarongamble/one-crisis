@@ -158,13 +158,13 @@ class Profile(webapp.RequestHandler):
         if resource_skills:
             person.resource_skills = resource_skills
             
-#        person.location = Distance.getlatlong(\
-#          country=person.home_country,\
-#          state=person.home_state,\
-#          city=person.home_city,\
-#          street=home_street,\
-#          postal_code=home_postal_code)
-#          
+        person.location = Distance.getlatlong(\
+          country=person.home_country,\
+          state=person.home_state,\
+          city=person.home_city,\
+          street=person.home_street,\
+          postal_code=person.home_postal_code)
+          
         person.put()
         
         self.response.set_status(200)
@@ -193,7 +193,7 @@ class Search(webapp.RequestHandler):
 
     def post(self):
         #var to hold search Items
-        searchItems = []
+        emptyArray = []
 
         #grab post data
         #skill=doctor&skill=engineer.
@@ -210,7 +210,7 @@ class Search(webapp.RequestHandler):
 
         # Filter by distance to query
         try:
-          query_location = Distance.getlatlng(country=searchLocation)
+          query_location = Distance.getlatlong(country=searchLocation)
           closest_people = Distance.find_closest(query_location,searchResults)
         except: closest_people = {0: searchResults}
 
@@ -223,8 +223,13 @@ class Search(webapp.RequestHandler):
         for distance in sorted(closest_people.keys()):
             for person in closest_people[distance]:
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skills})
-        
-        return simplejson.dumps(results)
+
+
+        if len(results) > 0:
+            return  self.response.out.write(simplejson.dumps(results))
+        else:
+            return  self.response.out.write(emptyArray)
+
         
 
 
