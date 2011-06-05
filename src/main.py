@@ -94,7 +94,14 @@ class Profile(webapp.RequestHandler):
             person.email = user.email
             person.put()
         
-        template_values = {'person': person, 'resources': Resources}
+        if self.request.get('edit'):
+            edit = True
+        else:
+            edit = False
+        
+        template_values = {'person':    person,
+                           'resources': Resources,
+                           'edit':      edit}
         
         path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
         self.response.out.write(template.render(path, template_values))
