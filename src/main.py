@@ -104,7 +104,7 @@ class Search(webapp.RequestHandler):
         searchSkills = self.request.get_all('skills')
         searchLocation = self.request.get_all('location')
 
-        searchResults = Person.filter(resource_skill = searchSkills)
+        searchResults = Person.objects.filter(resource_skill__in = searchSkills)
 
 
                 #"id": "id1",
@@ -124,7 +124,7 @@ class Search(webapp.RequestHandler):
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skill})
 
 
-        return self.response.out.write(simplejson.dumps(results))
+        return simplejson.dumps(results)
         
        
 
