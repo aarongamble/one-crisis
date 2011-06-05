@@ -1,12 +1,15 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api import users
+import os
+from google.appengine.ext.webapp import template
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-        self.response.out.write('Hello, webapp World!')
-
+        template_values = {}
+        path = os.path.join(os.path.dirname(__file__), 'templates/main.html')
+        self.response.out.write(template.render(path, template_values))
+        
 class People(webapp.RequestHandler):
     def get(self):
         pass

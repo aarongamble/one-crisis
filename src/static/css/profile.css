@@ -1,0 +1,31 @@
+
+
+#us-sidebar h3, #connect-sidebar h3 {
+    color: #B66611;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0 0 12px;
+}
+
+#comment_form label, .form-general label {
+    color: #93945E;
+    display: block;
+    font-weight: normal;
+    margin-bottom: 4px;
+}
+label {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+.form-general input, .form-general textarea {
+    overflow: hidden;
+     height: 26px;
+    width: 485px;
+}
+
+#profileimg{
+	 margin-bottom: 11px;
+    width: 79%;
+}
