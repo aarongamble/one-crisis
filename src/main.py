@@ -49,7 +49,16 @@ class People(webapp.RequestHandler):
         
     def get(self):
         user = users.get_current_user()
-        person = Person.get(self.request.get('id'))
+        id = None
+        try:
+            id = int(self.request.get('id'))
+        except:
+            self.error(404)
+            
+        if not id:
+            self.error(404)
+        
+        person = Person.get_by_id(id)
         if not person:
             template_values = {'person':    None,
                                'user':      user,
