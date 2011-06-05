@@ -1,11 +1,11 @@
-import os
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api import users
+import os
+import logging
 from google.appengine.ext.webapp import template
 from django.utils import simplejson
-
 class MainPage(webapp.RequestHandler):
     def get(self):
         template_values = {}
@@ -58,7 +58,9 @@ class Search(webapp.RequestHandler):
         #searchItems = []
 
         #grab post data
-        #searchParams = request.POST.get('search')
+        #skill=doctor&skill=engineer.
+        searchParams = self.request.get_all('skills')
+        logging.debug(searchParams)
 
         #query data set
         #searchData = Persons.search(searchParams)
