@@ -15,7 +15,8 @@ Resources = {
         '1' : 'Engineering',
         '2' : 'Doctor',
         '3' : 'Food',
-        '4' : 'Transportation'
+        '4' : 'Transportation',
+        '5' : 'Languages'
 }
 '''
 limit one person to each user
@@ -240,16 +241,16 @@ class Search(webapp.RequestHandler):
 
         results = [{"id":"1",
                    "name":"Leon Smith",
-                 "location":"Long Beach",
+                 "location":"San Francisco, CA",
                 "matched_skills":"Engineer"},
                 {"id":"2",
                    "name":"Madelene Udell",
-                 "location":"New York",
-                "matched_skills":"Nurse"},
+                 "location":"Daly City, CA",
+                "matched_skills":"Engineer"},
                  {"id":"3",
                    "name":"Mahalia Miller",
-                 "location":"Winsconsin",
-                "matched_skills":"Languages"}]
+                 "location":"San Francisco, CA",
+                "matched_skills":"Engineer"}]
 
 
 
