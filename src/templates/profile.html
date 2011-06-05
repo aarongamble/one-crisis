@@ -28,7 +28,7 @@
 					"phone=" + $("#c_phone").val(),
 					"resource_skills="  + ($("#c_skills").val().split(",").join("&resource_skills="))
 				]
-				console.log(qs.join("&"))
+				//console.log(qs.join("&"))
 				$.post("/profile", qs.join("&") + "", function(){
 									window.location.reload();
 
