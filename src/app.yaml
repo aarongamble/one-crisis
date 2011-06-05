@@ -4,6 +4,9 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /data
+  static_dir: data
+  
 - url: /css
   static_dir: static/css
 - url: /js

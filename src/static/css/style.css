@@ -58,10 +58,16 @@ body { min-width:1030px;}
 
 #slider { height:298px; background:url(images/slider.gif); }
 
-.slides { width:980px; height:298px; position:relative; overflow:hidden; color:#b6b6b6; }
+.slides { width:980px; height:298px; position:relative; overflow:hidden;}
+.slides p{  color:#b6b6b6; }
 .slides .jcarousel-clip { width:980px; height:298px; position:relative; overflow:hidden; }
-.slides ul { width:980px; height:298px; position:relative; overflow:hidden; list-style-type: none;}
-.slides ul li{ float:left; display:inline; width:980px; height:260px; position:relative; overflow:hidden; padding-top:38px;}
+.slides .ul { 
+	width:980px;
+	 height:298px; position:relative; overflow:hidden; list-style-type: none;}
+.slides .ul .li{ float:left;
+display:inline; width:980px;
+height:260px; position:relative;
+overflow:hidden; padding-top:38px;}
 
 .slide-info { float:left; width:720px; padding-top:20px;}
 .slide-info h2{ padding-bottom:20px;}
@@ -72,6 +78,9 @@ body { min-width:1030px;}
 	  height:240px; 
 }
 
+#mast-right{
+	float: left;	
+}
 #searchResults{
  background: none repeat scroll 0 0 white;
     border-radius: 4px 4px 4px 4px;
@@ -80,14 +89,31 @@ body { min-width:1030px;}
     opacity: 0.8;
     padding: 0 18px;
     width: 218px;
+    
+    overflow: auto;
+}
+#searchResults li img{
+	 float: left;
+    margin-right: 18px;
+    width: 47px;
 }
 #searchResults li div{
-	    margin-top: -27px;
-    padding-left: 56px;	
+	float: left;
 }
+
+#instructions p{
+	  color: gray;
+    font-size: 1em !important;
+    font-style: normal !important;
+}
+
 #searchResults li{
-	background: url("../img/profile_128.gif") center left no-repeat;
-	height: 40px;
+    border-bottom: 1px inset gray;
+    list-style: none outside none;
+    margin-bottom: 10px;
+    padding-top: 12px;
+    cursor: pointer;
+    overflow: auto;
 }
 #searchResults li h5{
 	color: #666;
@@ -119,11 +145,13 @@ body { min-width:1030px;}
 #slider-navigation ul li a em.ico3 { width:71px; height:64px; background:url(images/ico3.png)}
 
 #btnSearch{
-	height: 45px;
-    width: 130px;
+	    height: 33px;
+    left: 513px;
+    position: absolute;
+    top: 146px;
+    width: 127px;
 }
-#search{
- padding: 5px;  
+.holder {
     font-size: 15px;  
     text-shadow: 0px 1px 0px #fff;  
     outline: none;  
@@ -138,7 +166,7 @@ body { min-width:1030px;}
     -moz-box-shadow: 1px 1px 0px #efefef;  
     box-shadow:  1px 1px 0px #efefef;  
     
-     width: 66%;
+     width: 476px;
 	 height: 29px;
 }
 #slider-navigation ul li a.active,
