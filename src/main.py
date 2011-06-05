@@ -53,7 +53,7 @@ class Profile(webapp.RequestHandler):
         
         if not person:
             #Create a new Person instance for this user
-            person = Person()
+            person = Person(key_name=user.key())
             person.put()
         
         template_values = {'person': person}
