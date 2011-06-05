@@ -7,7 +7,7 @@ import os
 import logging
 from google.appengine.ext.webapp import template
 from django.utils import simplejson
-from distance import *
+import distance
 
 from model import *
 
@@ -216,8 +216,8 @@ class Search(webapp.RequestHandler):
 
         # Filter by distance to query
         try:
-          query_location = Distance.getlatlong(country=searchLocation)
-          closest_people = Distance.find_closest(query_location,searchResults)
+          query_location = distance.getlatlong(country=searchLocation)
+          closest_people = distance.find_closest(query_location,searchResults)
         except: closest_people = {0: searchResults}
 
                 # closest_people = {distance1: [person1,person2,...], distance2: [...]}
@@ -225,10 +225,18 @@ class Search(webapp.RequestHandler):
        # Results is a list of dicts.  
        # Each dict corresponds to a person with skills matching query skills, 
        # The dicts are sorted in order of increasing distance to query location
-        results = []
+        results = ["null"]
         for distance in sorted(closest_people.keys()):
             for person in closest_people[distance]:
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skills})
+
+
+
+
+        results = {"id":"1",
+                "name":"Leon Smith",
+                "location":"Long Beach",
+                "matched_skills":"Sleeping"}
 
 
 
