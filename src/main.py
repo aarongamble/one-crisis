@@ -229,7 +229,7 @@ class Search(webapp.RequestHandler):
        # Results is a list of dicts.  
        # Each dict corresponds to a person with skills matching query skills, 
        # The dicts are sorted in order of increasing distance to query location
-        results = ["null"]
+        results = []
 
         if searchResults > 0:
          for distance in sorted(closest_people.keys()):
@@ -239,19 +239,7 @@ class Search(webapp.RequestHandler):
 
 
 
-        results = [{"id":"1",
-                   "name":"Leon Smith",
-                 "location":"San Francisco, CA",
-                "matched_skills":"Engineer"},
-                {"id":"2",
-                   "name":"Madelene Udell",
-                 "location":"Daly City, CA",
-                "matched_skills":"Engineer"},
-                 {"id":"3",
-                   "name":"Mahalia Miller",
-                 "location":"San Francisco, CA",
-                "matched_skills":"Engineer"}]
-
+       
 
 
         if len(results) > 0:
