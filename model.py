@@ -58,9 +58,6 @@ class Person(Base):
     author_name = db.StringProperty(default='', multiline=True)
     author_email = db.StringProperty(default='')
     author_phone = db.StringProperty(default='')
-    home_city = db.StringProperty(default='')
-    home_country = db.StringProperty(default='')
-    
     home_street = db.StringProperty(default='')
     home_neighborhood = db.StringProperty(default='')
     home_city = db.StringProperty(default='')
@@ -70,6 +67,7 @@ class Person(Base):
     photo_url = db.TextProperty(default='')
     description = db.TextProperty(default='', multiline=True)
     
+    #then describe the resources and limitations to that 
     resource_skill = db.StringListProperty()
     location_street = db.StringProperty(default='')
     location_neighborhood = db.StringProperty(default='')
