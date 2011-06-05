@@ -16,10 +16,6 @@ from datetime import timedelta
 from google.appengine.api import datastore_errors
 from google.appengine.api import memcache
 from google.appengine.ext import db
-import config
-import indexing
-import pfif
-import prefix
 
 # All fields are either required, or have a default value.  For property
 # types that have a false value, the default is the false value.  For types
@@ -53,7 +49,6 @@ class Person(Base):
     home_postal_code = db.StringProperty(default='')
     home_country = db.StringProperty(default='')
     photo_url = db.TextProperty(default='')
-    description = db.TextProperty(default='', multiline=True)
 
     #then describe the resources and limitations to that
     resource_skill = db.StringListProperty()

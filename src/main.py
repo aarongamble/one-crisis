@@ -1,12 +1,21 @@
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext.webapp.util import login_required
 from google.appengine.api import users
 import os
 import logging
 from google.appengine.ext.webapp import template
 from django.utils import simplejson
 import Distance
+
+from model import *
+
+'''
+limit one person to each user
+the entire code base uses this assumption
+'''
+USER_PERSON_LIMIT = 1
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -15,6 +24,16 @@ class MainPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
         
 class People(webapp.RequestHandler):
+    
+    @staticmethod
+    def get_current_user_person():
+        user = users.get_current_user()
+        person = db.Query(Person).filter('user =', user).fetch(limit=USER_PERSON_LIMIT)
+        if person:
+            return person[0] # Only one person for each user
+        else:
+            return None
+        
     def get(self):
         user = users.get_current_user()
         person = Person.get(self.request.get('id'))
@@ -26,7 +45,7 @@ class People(webapp.RequestHandler):
             self.response.out.write(template.render(path, template_values))
             return
         
-        if user and user.key() == person.key():
+        if person.user == user:
             edit = True     # Viewing self, mark as edit
         else:
             edit = False
@@ -50,8 +69,10 @@ class Profile(webapp.RequestHandler):
             #should not ever get here since we are using @login_required
             return
         
+        logging.debug("user")
+        logging.debug(user)
         #Check if the user already has a person object
-        person = Person.get(user.user_id())
+        person = People.get_current_user_person()
         
         if not person:
             #Create a new Person instance for this user
@@ -92,7 +113,7 @@ class Search(webapp.RequestHandler):
 		#"matched_skills": "food, engineering"
 
         # Filter by distance to query
-        query_location = Distance.get_latlng(country=searchLocation)
+        query_location = Distance.getlatlng(country=searchLocation)
         closest_people = Distance.find_closest(query_location,searchResults)
 
         # closest_people = {distance1: [person1,person2,...], distance2: [...]}
