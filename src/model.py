@@ -55,7 +55,7 @@ class Person(Base):
     #then describe the resources and limitations to that
     address = db.StringProperty(default='')
     resource_skills = db.StringListProperty(default='')
-    location = db.BlobProperty()
+    location = db.StringProperty()
     location_street = db.StringProperty(default='')
     location_neighborhood = db.StringProperty(default='')
     location_city = db.StringProperty(default='')
