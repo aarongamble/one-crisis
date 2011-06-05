@@ -125,7 +125,7 @@ class Profile(webapp.RequestHandler):
             
         home_street = request.get('home_street')
         if home_street:
-            person.home_street = home_streets
+            person.home_street = home_street
         
         home_neighborhood = request.get('home_neighborhood')
         if home_neighborhood:
@@ -150,11 +150,18 @@ class Profile(webapp.RequestHandler):
         photo_url = request.get('photo_url')
         if photo_url:
             person.photo_url = photo_url
-            
+        
         resource_skills = request.get_all('resource_skills')
         if resource_skills:
             person.resource_skills = resource_skills
             
+        person.location = Distance.getlatlng(\
+          country=person.home_country,\
+          state=person.home_state,\
+          city=person.home_city,\
+          street=home_street,\
+          postal_code=home_postal_code)
+          
         person.put()
         
         self.response.set_status(200)
@@ -190,8 +197,8 @@ class Search(webapp.RequestHandler):
         searchSkills = self.request.get_all('skills')
         searchLocation = self.request.get_all('location')
 
-        searchResults = Person.objects.filter(resource_skill__in = searchSkills)
-
+        searchResults =  db.Query(Person).filter("resource_skill IN" , searchSkills)
+        
 
                 #"id": "id1",
                 #"name": "John Smith",
@@ -199,21 +206,23 @@ class Search(webapp.RequestHandler):
 		#"matched_skills": "food, engineering"
 
         # Filter by distance to query
-        query_location = Distance.getlatlng(country=searchLocation)
-        closest_people = Distance.find_closest(query_location,searchResults)
+        try:
+          query_location = Distance.getlatlng(country=searchLocation)
+          closest_people = Distance.find_closest(query_location,searchResults)
+        except: closest_people = {0: searchResults}
 
-        # closest_people = {distance1: [person1,person2,...], distance2: [...]}
-
+                # closest_people = {distance1: [person1,person2,...], distance2: [...]}
+       
+       # Results is a list of dicts.  
+       # Each dict corresponds to a person with skills matching query skills, 
+       # The dicts are sorted in order of increasing distance to query location
         results = []
         for distance in sorted(closest_people.keys()):
             for person in closest_people[distance]:
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skill})
-
-
+        
         return simplejson.dumps(results)
         
-       
-
 
 
 def main():
