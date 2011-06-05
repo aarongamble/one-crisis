@@ -34,29 +34,31 @@
 		<!-- Cols -->
 		<div class="cols">
 			<div class="cl">&nbsp;</div>
-			<div class="col-2">
+			<div class="col-2" id="profile">
 				
 				<div id="button-container">
 				<button class="sexybutton" type="reset"><span><span><span class="edit">Edit</span></span></span></button>
+				<button id="btnsave" class="sexybutton" 
+					type="reset"><span><span><span class="save">Save</span></span></span></button>
 
 				</div>
-				<form method="post"  id="profile" class="form-general">
+				<form method="post"  class="form-general">
 					<fieldset>
 						<div> 
 							<label for="contact-name"> Name</label>
-							<span> John Smith </span>
+							<span> John smith </span>
+							<input type="text" id="c_name" name="name" value="John Smith" />
 						</div>
 						<div> 
-							<label for="contact-name"> Name</label>
-							<span> John Smith </span>
+							<label for="contact-name"> Age </label>
+							<span> 34 </span>
+							<input type="text" id="c_age" name="c_age" value="John Smith" />
 						</div>
 						<div> 
-							<label for="contact-name"> Name</label>
-							<span> John Smith </span>
-						</div>
-						<div> 
-							<label for="contact-name"> Name</label>
-							<span> John Smith </span>
+							<label for="contact-name"> Skills </label>
+							<span> Engineering, Medicine </span>
+							<input type="text" id="resource_skill" name="resource_skill" 
+								value="Engineering, Medicine" />
 						</div>
 					</fieldset>
 				</form>

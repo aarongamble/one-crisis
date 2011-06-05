@@ -21,7 +21,7 @@ label {
 #profile fieldset{
 	border: 0;	
 }
-#profile label, #profile span{
+#profile label, #profile span,#profile input{
 	display: block;
 	float: left;	
 }
@@ -34,6 +34,22 @@ label {
 	margin-bottom: 10px;
 	background: #E0E1DB;
 }
+#profile input{
+	display: none;
+}
+#profile.edit input{
+	display: block;
+}
+#profile.edit span{
+	display: none;
+}
+
+#btnsave{
+	display: none;	
+}
+#profile.edit #btnsave{
+	display: block;
+}
 
 #button-container{
 	  margin-bottom: 6px;
@@ -42,7 +58,6 @@ label {
 .form-general input, .form-general textarea {
     overflow: hidden;
      height: 26px;
-    width: 485px;
 }
 
 #profileimg{
