@@ -42,6 +42,8 @@ class Person(Base):
     name = db.StringProperty(default='', multiline=True)
     email = db.StringProperty(default='')
     phone = db.StringProperty(default='')
+    
+    profession = db.StringProperty(default='')
     home_street = db.StringProperty(default='')
     home_neighborhood = db.StringProperty(default='')
     home_city = db.StringProperty(default='')
@@ -52,6 +54,7 @@ class Person(Base):
 
     #then describe the resources and limitations to that
     resource_skill = db.StringListProperty(default='')
+    address = db.StringProperty(default='')
     location_street = db.StringProperty(default='')
     location_neighborhood = db.StringProperty(default='')
     location_city = db.StringProperty(default='')
