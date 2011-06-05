@@ -34,23 +34,25 @@ label {
 	margin-bottom: 10px;
 	background: #E0E1DB;
 }
-#profile input{
+#main input{
 	display: none;
 }
-.edit input{
+#main.edit input{
 	display: block;
 }
-.edit span{
+#main.edit .profile span{
 	display: none;
 }
 
 #btnsave{
 	display: none;	
 }
-.edit #btnsave{
-	display: block;
+#main.edit #btnsave{
+	display: inline-block;
 }
-
+#main.edit #btnEdit{
+	display: none;	
+}
 #button-container{
 	  margin-bottom: 6px;
     text-align: right;
