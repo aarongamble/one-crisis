@@ -44,10 +44,9 @@
 				    	<p> What're you searching for? </p>
 				    
 				    	<select id="blah"  name="blah">
-				    		 	{% for resource in resources.items %}
+				    		  {% for resource in resources.items %}
 									<option value='{{resource.0}}'>{{resource.1}} </option>
 				  			  {% endfor %}
-				    	
 				    	</select>
 				    	<input type="button" value="Search" id="btnSearch"/>
 			    	</div>

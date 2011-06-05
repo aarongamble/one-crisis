@@ -37,17 +37,17 @@ label {
 #profile input{
 	display: none;
 }
-#profile.edit input{
+.edit input{
 	display: block;
 }
-#profile.edit span{
+.edit span{
 	display: none;
 }
 
 #btnsave{
 	display: none;	
 }
-#profile.edit #btnsave{
+.edit #btnsave{
 	display: block;
 }
 

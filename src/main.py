@@ -91,7 +91,7 @@ class Profile(webapp.RequestHandler):
             person.email = user.email
             person.put()
         
-        template_values = {'person': person}
+        template_values = {'person': person, 'resources': Resources}
         
         path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
         self.response.out.write(template.render(path, template_values))
