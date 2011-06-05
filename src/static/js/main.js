@@ -15,7 +15,7 @@
 						var thisresult = matches[result];
 						$.extend(thisresult, def);
 						
-						var templ = "<li> <img src='{{profile_pic}}' /> <div> <h5> {{name}} </h5>  <p>{{location}} </p> <p> {{matched_skills}}</p> </div> </li>"
+						var templ = "<li id='profile_{{id}}'> <img src='{{profile_pic}}' /> <div> <h5> {{name}} </h5>  <p>{{location}} </p> <p> {{matched_skills}}</p> </div> </li>"
 						var html = Mustache.to_html(templ, thisresult);
 						
 						$("#searchResults")
@@ -30,6 +30,12 @@
 			}
 			$("#btnSearch").click(x)
 		
+			$("#searchResults")
+				.delegate("li", "click", function(){
+					var id= this.id.replace("profile_", "");
+					window.location = window.location + "profile?id=" + id;
+				});
+			
 			$("#blah").fcbkcomplete({
 				addontab         : true,
 				onselect         : function(){

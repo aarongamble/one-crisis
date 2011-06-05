@@ -10,6 +10,19 @@ input, textarea, select { font-family: Arial, sans-serif; font-size:12px; }
 
 .notext { font-size:0; line-height:0; text-indent: -4000px; display:block; }
 
+#locn_text{
+    color: white;
+    font-size: 1.6em;
+    left: 330px;
+    position: absolute;
+    top: 152px;	
+}
+#location{
+ height: 28px;
+    left: 382px;
+    position: absolute;
+    top: 147px;
+}
 a img { border:0; }
 
 a { color:#9d5f0e; text-decoration: underline; cursor:pointer; }
@@ -151,7 +164,8 @@ overflow:hidden; padding-top:38px;}
     top: 146px;
     width: 127px;
 }
-.holder {
+
+.holder, #location {
     font-size: 15px;  
     text-shadow: 0px 1px 0px #fff;  
     outline: none;  
@@ -169,6 +183,11 @@ overflow:hidden; padding-top:38px;}
      width: 476px;
 	 height: 29px;
 }
+
+#location{
+	width: 120px
+}
+
 #slider-navigation ul li a.active,
 #slider-navigation ul li a:hover { background:url(images/slide-button-active.png); color:#a6a6a6; }
 

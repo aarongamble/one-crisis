@@ -14,7 +14,7 @@ outline: 0; padding: 3px 0px 2px; } /* no left/right padding here please */
 ul.holder li.bit-input input.smallinput { width: 20px; }
 
 /* Facebook demo CSS */      
-ul.holder { width: 500px; }
+ul.holder { width: 300px; }
 ul.holder { margin: 0 !important }
 ul.holder li.bit-box, #apple-list ul.holder li.bit-box { padding-right: 15px; position: relative; z-index:1000;}
 #apple-list ul.holder li.bit-input { margin: 0; }

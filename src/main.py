@@ -208,52 +208,42 @@ class Search(webapp.RequestHandler):
         searchSkills = self.request.get_all('skills')
         searchLocation = self.request.get_all('location')
 
-        searchResults =  db.Query(Person).filter("resource_skills IN" , searchSkills)
+        #searchResults =  db.Query(Person).get()
+        searchResults =  [{"id": 1, "name": "johngt", "location": "San Francisco", "matched_skills": "Engineering"}]
+        
+        results = searchResults
 
-
-       
-
-
-
-         #"id": "id1",
-        #"name": "John Smith",
-		#"location": "San Ramon, CA",
-		#"matched_skills": "food, engineering"
-
-        # Filter by distance to query
-        try:
-          query_location = distance.getlatlong(country=searchLocation)
-          closest_people = distance.find_closest(query_location,searchResults)
-        except: closest_people = {0: searchResults}
-
-                # closest_people = {distance1: [person1,person2,...], distance2: [...]}
-       
-       # Results is a list of dicts.  
-       # Each dict corresponds to a person with skills matching query skills, 
-       # The dicts are sorted in order of increasing distance to query location
-        results = ["null"]
-
-        if searchResults > 0:
-         for distance in sorted(closest_people.keys()):
-             for person in closest_people[distance]:
-                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skills})
-
-
-
-
-        results = [{"id":"1",
-                   "name":"Leon Smith",
-                 "location":"San Francisco, CA",
-                "matched_skills":"Engineer"},
-                {"id":"2",
-                   "name":"Madelene Udell",
-                 "location":"Daly City, CA",
-                "matched_skills":"Engineer"},
-                 {"id":"3",
-                   "name":"Mahalia Miller",
-                 "location":"San Francisco, CA",
-                "matched_skills":"Engineer"}]
-
+#       
+#
+#
+#
+#         #"id": "id1",
+#        #"name": "John Smith",
+#		#"location": "San Ramon, CA",
+#		#"matched_skills": "food, engineering"
+#
+#        # Filter by distance to query
+#        try:
+#          query_location = distance.getlatlongaddr(searchLocation)
+#          closest_people = distance.find_closest(query_location,searchResults)
+#        except: closest_people = {0: searchResults}
+#
+#                # closest_people = {distance1: [person1,person2,...], distance2: [...]}
+#       
+#       # Results is a list of dicts.  
+#       # Each dict corresponds to a person with skills matching query skills, 
+#       # The dicts are sorted in order of increasing distance to query location
+#        results = []
+#
+#        if searchResults > 0:
+#         for distance in sorted(closest_people.keys()):
+#             for person in closest_people[distance]:
+#                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skills})
+#
+#
+#
+#
+#       
 
 
         if len(results) > 0:
