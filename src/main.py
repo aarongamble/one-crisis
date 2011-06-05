@@ -207,7 +207,7 @@ class Search(webapp.RequestHandler):
 
         # Filter by distance to query
         try:
-          query_location = Distance.getlatlng(country=searchLocation)
+          query_location = Distance.getlatlong(country=searchLocation)
           closest_people = Distance.find_closest(query_location,searchResults)
         except: closest_people = {0: searchResults}
 
