@@ -42,6 +42,7 @@ class Person(Base):
 #    entry_date = db.DateTimeProperty(required=True)
 #    expiry_date = db.DateTimeProperty(required=False)
     #basic info
+    user = db.UserProperty(auto_current_user_add=True)
     author_name = db.StringProperty(default='', multiline=True)
     author_email = db.StringProperty(default='')
     author_phone = db.StringProperty(default='')
