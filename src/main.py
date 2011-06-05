@@ -3,6 +3,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api import users
 import os
 from google.appengine.ext.webapp import template
+from django.utils import simplejson
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -28,8 +29,22 @@ class Search(webapp.RequestHandler):
     def get(self):
         pass
 
+
+    #need to verify post name
+
     def post(self):
-        pass
+        #var to hold search Items
+        #searchItems = []
+
+        #grab post data
+        #searchParams = request.POST.get('search')
+
+        #query data set
+        #searchData = Persons.search(searchParams)
+
+
+        #return simplejson.dumps(search data)
+        return
 
 
 application = webapp.WSGIApplication(
