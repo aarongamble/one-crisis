@@ -11,6 +11,12 @@ import distance
 
 from model import *
 
+Resources = {
+        '1' : 'Engineering',
+        '2' : 'Doctor',
+        '3' : 'Food',
+        '4' : 'Transportation'
+}
 '''
 limit one person to each user
 the entire code base uses this assumption
@@ -19,7 +25,7 @@ USER_PERSON_LIMIT = 1
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        template_values = {}
+        template_values = {'resources': Resources}
         path = os.path.join(os.path.dirname(__file__), 'templates/main.html')
         self.response.out.write(template.render(path, template_values))
         
@@ -70,6 +76,7 @@ class Profile(webapp.RequestHandler):
   #  @login_required
     def get(self):
         user = users.get_current_user()
+        logging.debug(user)
         
         if not user:
             #should not ever get here since we are using @login_required
@@ -87,7 +94,7 @@ class Profile(webapp.RequestHandler):
             person.email = user.email
             person.put()
         
-        template_values = {'person': person}
+        template_values = {'person': person, 'resources': Resources}
         
         path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
         self.response.out.write(template.render(path, template_values))
@@ -204,14 +211,15 @@ class Search(webapp.RequestHandler):
        
 
 
-application = webapp.WSGIApplication(
+
+def main():
+    logging.getLogger().setLevel(logging.DEBUG)
+    application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                       ('/people', People),
                                       ('/profile', Profile),
                                       ('/search', Search)],
                                      debug=True)
-
-def main():
     run_wsgi_app(application)
 
 if __name__ == "__main__":

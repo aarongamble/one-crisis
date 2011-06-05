@@ -51,29 +51,10 @@ class Person(Base):
     photo_url = db.TextProperty(default='')
 
     #then describe the resources and limitations to that
-    resource_skill = db.StringListProperty()
+    resource_skill = db.StringListProperty(default='')
     location_street = db.StringProperty(default='')
     location_neighborhood = db.StringProperty(default='')
     location_city = db.StringProperty(default='')
     location_state = db.StringProperty(default='')
     location_postal_code = db.StringProperty(default='')
-    location_country = db.StringListProperty()
-
-class Resource():
-    it_provider = db.BooleanProperty()
-    med_provider = db.BooleanProperty()
-    engineer = db.BooleanProperty()
-    farmer = db.BooleanProperty()
-    interpreter = db.BooleanProperty()
-    project_manager = db.BooleanProperty()
-    hr_manager = db.BooleanProperty()
-    logistics = db.BooleanProperty()
-    otherProvider = db.BooleanProperty()
-
-    water = db.BooleanProperty()
-    food = db.BooleanProperty()
-    it_equipment = db.BooleanProperty()
-    med_supplies = db.BooleanProperty()
-    transportation = db.BooleanProperty()
-    money = db.BooleanProperty()
-    other = db.BooleanProperty()
+    location_country = db.StringProperty()
