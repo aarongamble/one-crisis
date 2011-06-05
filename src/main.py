@@ -176,8 +176,8 @@ class Search(webapp.RequestHandler):
         searchSkills = self.request.get_all('skills')
         searchLocation = self.request.get_all('location')
 
-        searchResults = Person.objects.filter(resource_skill__in = searchSkills)
-
+        searchResults =  db.Query(Person).filter("resource_skill IN" , searchSkills)
+        
 
                 #"id": "id1",
                 #"name": "John Smith",
