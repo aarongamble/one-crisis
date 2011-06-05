@@ -7,6 +7,7 @@ import os
 import logging
 from google.appengine.ext.webapp import template
 from django.utils import simplejson
+import distance
 
 from model import *
 
@@ -63,7 +64,7 @@ class People(webapp.RequestHandler):
         pass
 
 class Profile(webapp.RequestHandler):
-    @login_required
+  #  @login_required
     def get(self):
         user = users.get_current_user()
         
@@ -168,19 +169,36 @@ class Search(webapp.RequestHandler):
 
     def post(self):
         #var to hold search Items
-        #searchItems = []
+        searchItems = []
 
         #grab post data
         #skill=doctor&skill=engineer.
-        searchParams = self.request.get_all('skills')
-        logging.debug(searchParams)
+        searchSkills = self.request.get_all('skills')
+        searchLocation = self.request.get_all('location')
 
-        #query data set
-        #searchData = Persons.search(searchParams)
+        searchResults = Person.filter(resource_skill = searchSkills)
 
 
-        #return simplejson.dumps(search data)
-        return
+                #"id": "id1",
+                #"name": "John Smith",
+		#"location": "San Ramon, CA",
+		#"matched_skills": "food, engineering"
+
+        # Filter by distance to query
+        query_location = Distance.getlatlng(country=searchLocation)
+        closest_people = Distance.find_closest(query_location,searchResults)
+
+        # closest_people = {distance1: [person1,person2,...], distance2: [...]}
+
+        results = []
+        for distance in sorted(closest_people.keys()):
+            for person in closest_people[distance]:
+                results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skill})
+
+
+        return self.response.out.write(simplejson.dumps(results))
+        
+       
 
 
 application = webapp.WSGIApplication(
