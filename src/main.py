@@ -30,7 +30,7 @@ class People(webapp.RequestHandler):
         user = users.get_current_user()
         if not user:
             return None
-        return get_user_person(user)
+        return People.get_user_person(user)
     
     @staticmethod
     def get_user_person(user):
