@@ -42,9 +42,12 @@
 			    	<div class="slide-info">
 				    	<h2><span> SAN FRANCISCO </span> Crisis Action Center</h2>
 				    	<p> What're you searching for? </p>
+				    
 				    	<select id="blah"  name="blah">
-				    		<option value="1"> Apple </option>
-				    		<option value="2"> Mango </option>
+				    		 	{% for resource in resources.items %}
+									<option value='{{resource.0}}'>{{resource.1}} </option>
+				  			  {% endfor %}
+				    	
 				    	</select>
 				    	<input type="button" value="Search" id="btnSearch"/>
 			    	</div>

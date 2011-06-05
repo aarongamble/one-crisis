@@ -10,9 +10,16 @@ from django.utils import simplejson
 
 from model import *
 
+Resources = {
+        '1' : 'Engineering',
+        '2' : 'Doctor',
+        '3' : 'Food',
+        '4' : 'Transportation'
+}
+
 class MainPage(webapp.RequestHandler):
     def get(self):
-        template_values = {}
+        template_values = {'resources': Resources}
         path = os.path.join(os.path.dirname(__file__), 'templates/main.html')
         self.response.out.write(template.render(path, template_values))
         
