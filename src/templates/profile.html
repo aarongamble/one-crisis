@@ -29,10 +29,12 @@
 					"resource_skills="  + ($("#c_skills").val().split(",").join("&resource_skills="))
 				]
 				console.log(qs.join("&"))
-				$.post("/profile", qs.join("&") + "");
+				$.post("/profile", qs.join("&") + "", function(){
+									window.location.reload();
+
+				});
 				
 				$("#main").removeClass("edit");
-				window.location.reload();
 			});
 			
 			$("#btnEdit").click(function(evt){
@@ -84,9 +86,11 @@
 						</div>
 						<div> 
 							<label for="contact-name"> Skills </label>
-							<span> Engineering, Medicine </span>
+							<span> {% for skill in person.resource_skills %}
+									{{skill}}
+								{% endfor  %} </span>
 							
-							<input type="text" id="c_skills" name="resource_skill" value="" />
+							<input type="text" id="c_skills" name="resource_skill" value="{% for skill in person.resource_skills %} {{skill}} {% endfor  %}" />
 							
 						</div>
 					</fieldset>

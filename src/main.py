@@ -158,12 +158,12 @@ class Profile(webapp.RequestHandler):
         if resource_skills:
             person.resource_skills = resource_skills
             
-        person.location = Distance.getlatlong(\
-          country=person.home_country,\
-          state=person.home_state,\
-          city=person.home_city,\
-          street=person.home_street,\
-          postal_code=person.home_postal_code)
+#        person.location = Distance.getlatlong(\
+#          country=person.home_country,\
+#          state=person.home_state,\
+#          city=person.home_city,\
+#          street=person.home_street,\
+#          postal_code=person.home_postal_code)
           
         person.put()
         
@@ -203,8 +203,8 @@ class Search(webapp.RequestHandler):
         searchResults =  db.Query(Person).filter("resource_skills IN" , searchSkills)
         
 
-                #"id": "id1",
-                #"name": "John Smith",
+         #"id": "id1",
+        #"name": "John Smith",
 		#"location": "San Ramon, CA",
 		#"matched_skills": "food, engineering"
 
