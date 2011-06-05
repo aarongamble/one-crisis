@@ -198,7 +198,16 @@ class Search(webapp.RequestHandler):
         searchLocation = self.request.get_all('location')
 
         searchResults =  db.Query(Person).filter("resource_skills IN" , searchSkills)
-        
+
+
+        searchResults = {"id":"1",
+                "name":"Leon Smith",
+                "location":"Long Beach",
+                "matched_skills":"Sleeping"}
+
+
+
+
 
                 #"id": "id1",
                 #"name": "John Smith",
@@ -222,8 +231,10 @@ class Search(webapp.RequestHandler):
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skills})
 
 
+
         if len(results) > 0:
             return  self.response.out.write(simplejson.dumps(results))
+
         else:
             return  self.response.out.write(emptyArray)
 
