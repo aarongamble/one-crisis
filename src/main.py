@@ -151,6 +151,10 @@ class Profile(webapp.RequestHandler):
         if photo_url:
             person.photo_url = photo_url
             
+        resource_skills = request.get_all('resource_skills')
+        if resource_skills:
+            person.resource_skills = resource_skills
+            
         person.put()
         
         self.response.set_status(200)
