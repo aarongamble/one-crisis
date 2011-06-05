@@ -1,11 +1,13 @@
-	<div><h5> John Smith </h5> 
-								<p> San Francisco, CA</p>
-								<p> Engineer, Food</p>
-								</div>
 	$(document).ready(function(){
 			$("#blah").fcbkcomplete({
 				addontab         : true,
 				onselect         : function(){
+					var qs = []
+					$(".bit-box").each(function(a,item){
+					    qs.push($(item).text());
+					});
+					var finalQs = qs.join("skills=");
+					
 					$.getJSON("data/sample_search_results.txt",  function(matches){
 							for(var result in matches){
 								var def = {

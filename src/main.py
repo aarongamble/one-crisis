@@ -11,6 +11,12 @@ import distance
 
 from model import *
 
+Resources = {
+        '1' : 'Engineering',
+        '2' : 'Doctor',
+        '3' : 'Food',
+        '4' : 'Transportation'
+}
 '''
 limit one person to each user
 the entire code base uses this assumption
@@ -19,7 +25,7 @@ USER_PERSON_LIMIT = 1
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        template_values = {}
+        template_values = {'resources': Resources}
         path = os.path.join(os.path.dirname(__file__), 'templates/main.html')
         self.response.out.write(template.render(path, template_values))
         
@@ -30,7 +36,10 @@ class People(webapp.RequestHandler):
         user = users.get_current_user()
         if not user:
             return None
-        
+        return People.get_user_person(user)
+    
+    @staticmethod
+    def get_user_person(user):
         person = db.Query(Person).filter('user =', user).fetch(limit=USER_PERSON_LIMIT)
         if person:
             return person[0] # Only one person for each user
@@ -67,6 +76,7 @@ class Profile(webapp.RequestHandler):
   #  @login_required
     def get(self):
         user = users.get_current_user()
+        logging.debug(user)
         
         if not user:
             #should not ever get here since we are using @login_required
@@ -84,67 +94,67 @@ class Profile(webapp.RequestHandler):
             person.email = user.email
             person.put()
         
-        template_values = {'person': person}
+        template_values = {'person': person, 'resources': Resources}
         
         path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
         self.response.out.write(template.render(path, template_values))
         
 
-    @login_required
     def post(self):
-        person = People.get_current_user_person()
+        user = users.get_current_user()
+        if not user:
+            error(403)
         
-        context = self.context
+        person = People.get_user_person(user)
+        if person.user != user:
+            error(403)
         
-        name = context.get('name')
+        request = self.request
+        
+        name = request.get('name')
         if name:
             person.name = name
             
-        email = context.get('email')
+        email = request.get('email')
         if email:
             person.email = email
         
-        phone = context.get('phone')
+        phone = request.get('phone')
         if phone:
             person.phone = phone
             
-        home_street = context.get('home_street')
+        home_street = request.get('home_street')
         if home_street:
             person.home_street = home_streets
         
-        home_neighborhood = context.get('home_neighborhood')
+        home_neighborhood = request.get('home_neighborhood')
         if home_neighborhood:
             person.home_neighborhood = home_neighborhood
             
-        home_city = context.get('home_city')
+        home_city = request.get('home_city')
         if home_city:
             person.home_city = home_city
         
-        home_state = context.get('home_state')
+        home_state = request.get('home_state')
         if home_state:
             person.home_state = home_state
         
-        home_postal_code = context.get('home_postal_code')
+        home_postal_code = request.get('home_postal_code')
         if home_postal_code:
             person.home_postal_code = home_postal_code
         
-        home_country = context.get('home_country')
+        home_country = request.get('home_country')
         if home_country:
             person.home_country = home_country
             
-        photo_url = context.get('photo_url')
+        photo_url = request.get('photo_url')
         if photo_url:
-            person.photo_url
+            person.photo_url = photo_url
             
         person.put()
         
-        template_values = {'user':      user,
-                           'person':    person,
-                           'edit':      True}
-        
-        path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
-        self.response.out.write(template.render(path, template_values))
-        
+        self.response.set_status(200)
+                           
         '''
         Not sure what to do with resources
         
@@ -185,30 +195,33 @@ class Search(webapp.RequestHandler):
 		#"matched_skills": "food, engineering"
 
         # Filter by distance to query
-        query_location = Distance.getlatlng(country=searchLocation)
-        closest_people = Distance.find_closest(query_location,searchResults)
+        try:
+          query_location = Distance.getlatlng(country=searchLocation)
+          closest_people = Distance.find_closest(query_location,searchResults)
+        except: closest_people = {0: searchResults}
 
-        # closest_people = {distance1: [person1,person2,...], distance2: [...]}
-
+                # closest_people = {distance1: [person1,person2,...], distance2: [...]}
+       
+       # Results is a list of dicts.  
+       # Each dict corresponds to a person with skills matching query skills, 
+       # The dicts are sorted in order of increasing distance to query location
         results = []
         for distance in sorted(closest_people.keys()):
             for person in closest_people[distance]:
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skill})
-
-
+        
         return simplejson.dumps(results)
         
-       
 
 
-application = webapp.WSGIApplication(
+def main():
+    logging.getLogger().setLevel(logging.DEBUG)
+    application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                       ('/people', People),
                                       ('/profile', Profile),
                                       ('/search', Search)],
                                      debug=True)
-
-def main():
     run_wsgi_app(application)
 
 if __name__ == "__main__":
