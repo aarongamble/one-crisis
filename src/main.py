@@ -198,7 +198,16 @@ class Search(webapp.RequestHandler):
         searchLocation = self.request.get_all('location')
 
         searchResults =  db.Query(Person).filter("resource_skills IN" , searchSkills)
-        
+
+
+        searchResults = {"id":"1",
+                "name":"Leon Smith",
+                "location":"Long Beach",
+                "matched_skills":"Sleeping"}
+
+
+
+
 
                 #"id": "id1",
                 #"name": "John Smith",
@@ -216,14 +225,24 @@ class Search(webapp.RequestHandler):
        # Results is a list of dicts.  
        # Each dict corresponds to a person with skills matching query skills, 
        # The dicts are sorted in order of increasing distance to query location
-        results = []
+        results = ["null"]
         for distance in sorted(closest_people.keys()):
             for person in closest_people[distance]:
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skills})
 
 
+
+
+        results = {"id":"1",
+                "name":"Leon Smith",
+                "location":"Long Beach",
+                "matched_skills":"Sleeping"}
+
+
+
         if len(results) > 0:
             return  self.response.out.write(simplejson.dumps(results))
+
         else:
             return  self.response.out.write(emptyArray)
 
