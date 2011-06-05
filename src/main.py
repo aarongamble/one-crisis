@@ -109,45 +109,45 @@ class Profile(webapp.RequestHandler):
         if person.user != user:
             error(403)
         
-        context = self.context
+        request = self.request
         
-        name = context.get('name')
+        name = request.get('name')
         if name:
             person.name = name
             
-        email = context.get('email')
+        email = request.get('email')
         if email:
             person.email = email
         
-        phone = context.get('phone')
+        phone = request.get('phone')
         if phone:
             person.phone = phone
             
-        home_street = context.get('home_street')
+        home_street = request.get('home_street')
         if home_street:
             person.home_street = home_streets
         
-        home_neighborhood = context.get('home_neighborhood')
+        home_neighborhood = request.get('home_neighborhood')
         if home_neighborhood:
             person.home_neighborhood = home_neighborhood
             
-        home_city = context.get('home_city')
+        home_city = request.get('home_city')
         if home_city:
             person.home_city = home_city
         
-        home_state = context.get('home_state')
+        home_state = request.get('home_state')
         if home_state:
             person.home_state = home_state
         
-        home_postal_code = context.get('home_postal_code')
+        home_postal_code = request.get('home_postal_code')
         if home_postal_code:
             person.home_postal_code = home_postal_code
         
-        home_country = context.get('home_country')
+        home_country = request.get('home_country')
         if home_country:
             person.home_country = home_country
             
-        photo_url = context.get('photo_url')
+        photo_url = request.get('photo_url')
         if photo_url:
             person.photo_url = photo_url
             
