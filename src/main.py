@@ -238,10 +238,18 @@ class Search(webapp.RequestHandler):
 
 
 
-        results = {"id":"1",
-                "name":"Leon Smith",
-                "location":"Long Beach",
-                "matched_skills":"Sleeping"}
+        results = [{"id":"1",
+                   "name":"Leon Smith",
+                 "location":"Long Beach",
+                "matched_skills":"Engineer"},
+                {"id":"2",
+                   "name":"Madelene Udell",
+                 "location":"New York",
+                "matched_skills":"Nurse"},
+                 {"id":"3",
+                   "name":"Mahalia Miller",
+                 "location":"Winsconsin",
+                "matched_skills":"Languages"}]
 
 
 
