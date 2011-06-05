@@ -159,8 +159,8 @@ class Profile(webapp.RequestHandler):
           country=person.home_country,\
           state=person.home_state,\
           city=person.home_city,\
-          street=home_street,\
-          postal_code=home_postal_code)
+          street=person.home_street,\
+          postal_code=person.home_postal_code)
           
         person.put()
         
