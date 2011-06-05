@@ -145,6 +145,9 @@ class Profile(webapp.RequestHandler):
         home_state = request.get('home_state')
         if home_state:
             person.home_state = home_state
+        profession = request.get('profession')
+        if profession:
+            person.profession = profession
         
         home_postal_code = request.get('home_postal_code')
         if home_postal_code:
@@ -216,8 +219,8 @@ class Search(webapp.RequestHandler):
 
 
 
-                #"id": "id1",
-                #"name": "John Smith",
+         #"id": "id1",
+        #"name": "John Smith",
 		#"location": "San Ramon, CA",
 		#"matched_skills": "food, engineering"
 
