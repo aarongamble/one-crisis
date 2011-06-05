@@ -18,6 +18,17 @@ def getDistance( lat1,lng1,lat2,lng2 ):
   distance = sqrt(sum( map( lambda x: math.pow( x, 2 ), dxyz ) ) )
   return distance
   
+def getlatlongaddr(addr=''):
+  try:
+    query = addr
+    map_address = urllib.urlopen('https://maps.googleapis.com/maps/api/geocode/json?address='+query+'&sensor=false').read()
+    info = json.loads(map_address)
+    if info['status'] == 'OK':
+      return map_address #info['results'][0]
+    else: return ""
+  except: return ""
+  
+  
 def getlatlong(country='',state='',city='',street='',street_number='',postal_code=''):
   '''Returns the location information (including latitude and longitude and bounding box) for the given location information'''
   try:
@@ -26,22 +37,28 @@ def getlatlong(country='',state='',city='',street='',street_number='',postal_cod
     map_address = urllib.urlopen('https://maps.googleapis.com/maps/api/geocode/json?address='+query+'&sensor=false').read()
     info = json.loads(map_address)
     if info['status'] == 'OK':
-      return info['results'][0]
-    else: return 0
-  except: return 0
+      return map_address #info['results'][0]
+    else: return ""
+  except: return ""
   
-def find_closest(location,possible_matches):
+  
+  
+def find_closest(location_json,possible_matches):
   '''Returns a dict of people close enough to the query location.  Keys are distances to query location
   closest_people = {distance1: [person1,person2,...], distance2:[], ...}'''
   closest_people = {}
+  info = json.loads(location_json)
+  location = info['results'][0]
   lat = location['geometry']['location']['lat']
   lng = location['geometry']['location']['lng']
   # Maximum radius in which to return results should be 10km greater than the size of the bounding box
   r = 10 + max( getDistance(lat,lng,location['geometry']['bounds']['northeast']['lat'],location['geometry']['bounds']['northeast']['lng']),
     getDistance(lat,lng,location['geometry']['bounds']['southwest']['lat'],location['geometry']['bounds']['southwest']['lng']))
   for person in possible_matches:
-    lat1 = person.location['geometry']['location']['lat']
-    lng1 = person.location['geometry']['location']['lng']
+    info = json.loads(person.location)
+    location = info['results'][0]
+    lat1 = location['geometry']['location']['lat']
+    lng1 = location['geometry']['location']['lng']
     distance = getDistance(lat,lng,lat1,lng1)
     if distance<r:
       if distance in closest_people:  closest_people[distance].append(person)

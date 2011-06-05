@@ -94,7 +94,14 @@ class Profile(webapp.RequestHandler):
             person.email = user.email
             person.put()
         
-        template_values = {'person': person, 'resources': Resources}
+        if self.request.get('edit'):
+            edit = True
+        else:
+            edit = False
+        
+        template_values = {'person':    person,
+                           'resources': Resources,
+                           'edit':      edit}
         
         path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
         self.response.out.write(template.render(path, template_values))
@@ -118,6 +125,9 @@ class Profile(webapp.RequestHandler):
         email = request.get('email')
         if email:
             person.email = email
+        address = request.get('address')
+        if address:
+            person.address = address
         
         phone = request.get('phone')
         if phone:
@@ -138,6 +148,9 @@ class Profile(webapp.RequestHandler):
         home_state = request.get('home_state')
         if home_state:
             person.home_state = home_state
+        profession = request.get('profession')
+        if profession:
+            person.profession = profession
         
         home_postal_code = request.get('home_postal_code')
         if home_postal_code:
@@ -155,12 +168,7 @@ class Profile(webapp.RequestHandler):
         if resource_skills:
             person.resource_skills = resource_skills
             
-        person.location = distance.getlatlong(\
-          country=person.home_country,\
-          state=person.home_state,\
-          city=person.home_city,\
-          street=person.home_street,\
-          postal_code=person.home_postal_code)
+        person.location = distance.getlatlongaddr(person.address)
           
         person.put()
         
@@ -204,8 +212,8 @@ class Search(webapp.RequestHandler):
 
 
 
-                #"id": "id1",
-                #"name": "John Smith",
+         #"id": "id1",
+        #"name": "John Smith",
 		#"location": "San Ramon, CA",
 		#"matched_skills": "food, engineering"
 

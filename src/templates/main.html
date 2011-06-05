@@ -41,13 +41,14 @@
 			    <div class="li">
 			    	<div class="slide-info">
 				    	<h2><span> SAN FRANCISCO </span> Crisis Action Center</h2>
-				    	<p> What're you searching for? </p>
+				    	<p> What are you searching for? </p>
 				    
 				    	<select id="blah"  name="blah">
 				    		  {% for resource in resources.items %}
 									<option value='{{resource.0}}'>{{resource.1}} </option>
 				  			  {% endfor %}
 				    	</select>
+				    	<input type="text" value="San Francisco" id="location"/>
 				    	<input type="button" value="Search" id="btnSearch"/>
 			    	</div>
 			    	<div id="mast-right">
