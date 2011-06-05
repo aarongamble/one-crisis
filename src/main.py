@@ -7,7 +7,7 @@ import os
 import logging
 from google.appengine.ext.webapp import template
 from django.utils import simplejson
-from distance import *
+import distance
 
 from model import *
 
@@ -155,7 +155,7 @@ class Profile(webapp.RequestHandler):
         if resource_skills:
             person.resource_skills = resource_skills
             
-        person.location = Distance.getlatlong(\
+        person.location = distance.getlatlong(\
           country=person.home_country,\
           state=person.home_state,\
           city=person.home_city,\
@@ -207,8 +207,8 @@ class Search(webapp.RequestHandler):
 
         # Filter by distance to query
         try:
-          query_location = Distance.getlatlong(country=searchLocation)
-          closest_people = Distance.find_closest(query_location,searchResults)
+          query_location = distance.getlatlong(country=searchLocation)
+          closest_people = distance.find_closest(query_location,searchResults)
         except: closest_people = {0: searchResults}
 
                 # closest_people = {distance1: [person1,person2,...], distance2: [...]}
