@@ -155,7 +155,7 @@ class Profile(webapp.RequestHandler):
         if resource_skills:
             person.resource_skills = resource_skills
             
-        person.location = Distance.getlatlong(\
+        person.location = distance.getlatlong(\
           country=person.home_country,\
           state=person.home_state,\
           city=person.home_city,\
