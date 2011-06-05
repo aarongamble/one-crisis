@@ -142,7 +142,7 @@ class Profile(webapp.RequestHandler):
             
         photo_url = context.get('photo_url')
         if photo_url:
-            person.photo_url
+            person.photo_url = photo_url
             
         person.put()
         
