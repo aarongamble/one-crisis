@@ -104,7 +104,7 @@ class Search(webapp.RequestHandler):
         searchSkills = self.request.get_all('skills')
         searchLocation = self.request.get_all('location')
 
-        searchResults = Person.filter(skill = searchSkills)
+        searchResults = Person.filter(resource_skill = searchSkills)
 
 
                 #"id": "id1",
@@ -124,9 +124,9 @@ class Search(webapp.RequestHandler):
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skill})
 
 
-        self.response.out.write(simplejson.dumps(results))
-        #simplejson.dumps(searchParams)
-        return
+        return self.response.out.write(simplejson.dumps(results))
+        
+       
 
 
 application = webapp.WSGIApplication(
