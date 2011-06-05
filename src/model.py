@@ -16,10 +16,6 @@ from datetime import timedelta
 from google.appengine.api import datastore_errors
 from google.appengine.api import memcache
 from google.appengine.ext import db
-import config
-import indexing
-import pfif
-import prefix
 
 # All fields are either required, or have a default value.  For property
 # types that have a false value, the default is the false value.  For types
@@ -42,9 +38,10 @@ class Person(Base):
 #    entry_date = db.DateTimeProperty(required=True)
 #    expiry_date = db.DateTimeProperty(required=False)
     #basic info
-    author_name = db.StringProperty(default='', multiline=True)
-    author_email = db.StringProperty(default='')
-    author_phone = db.StringProperty(default='')
+    user = db.UserProperty(auto_current_user_add=True)
+    name = db.StringProperty(default='', multiline=True)
+    email = db.StringProperty(default='')
+    phone = db.StringProperty(default='')
     home_street = db.StringProperty(default='')
     home_neighborhood = db.StringProperty(default='')
     home_city = db.StringProperty(default='')
@@ -52,7 +49,6 @@ class Person(Base):
     home_postal_code = db.StringProperty(default='')
     home_country = db.StringProperty(default='')
     photo_url = db.TextProperty(default='')
-    description = db.TextProperty(default='', multiline=True)
 
     #then describe the resources and limitations to that
     resource_skill = db.StringListProperty()
