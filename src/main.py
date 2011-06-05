@@ -20,7 +20,9 @@ class People(webapp.RequestHandler):
 
 class Profile(webapp.RequestHandler):
     def get(self):
-        pass
+        template_values = {}
+        path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
+        self.response.out.write(template.render(path, template_values))
 
     def post(self):
         pass

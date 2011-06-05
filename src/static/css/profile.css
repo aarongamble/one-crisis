@@ -18,7 +18,27 @@ label {
     font-weight: bold;
 }
 
+#profile fieldset{
+	border: 0;	
+}
+#profile label, #profile span{
+	display: block;
+	float: left;	
+}
+#profile label{
+	width: 200px;	
+}
+#profile div{
+	overflow: auto;	
+	padding: 5px 0 5px 5px;
+	margin-bottom: 10px;
+	background: #E0E1DB;
+}
 
+#button-container{
+	  margin-bottom: 6px;
+    text-align: right;
+}
 .form-general input, .form-general textarea {
     overflow: hidden;
      height: 26px;
