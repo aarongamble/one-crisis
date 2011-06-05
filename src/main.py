@@ -190,7 +190,7 @@ class Search(webapp.RequestHandler):
 
     def post(self):
         #var to hold search Items
-        searchItems = []
+        emptyArray = []
 
         #grab post data
         #skill=doctor&skill=engineer.
@@ -220,8 +220,13 @@ class Search(webapp.RequestHandler):
         for distance in sorted(closest_people.keys()):
             for person in closest_people[distance]:
                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skills})
-        
-        return simplejson.dumps(results)
+
+
+        if len(results) > 0:
+            return  self.response.out.write(simplejson.dumps(results))
+        else:
+            return  self.response.out.write(emptyArray)
+
         
 
 
