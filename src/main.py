@@ -7,7 +7,7 @@ import os
 import logging
 from google.appengine.ext.webapp import template
 from django.utils import simplejson
-import distance
+from distance import *
 
 from model import *
 
@@ -138,6 +138,9 @@ class Profile(webapp.RequestHandler):
         home_state = request.get('home_state')
         if home_state:
             person.home_state = home_state
+        profession = request.get('profession')
+        if profession:
+            person.profession = profession
         
         home_postal_code = request.get('home_postal_code')
         if home_postal_code:
@@ -155,13 +158,13 @@ class Profile(webapp.RequestHandler):
         if resource_skills:
             person.resource_skills = resource_skills
             
-        person.location = Distance.getlatlng(\
-          country=person.home_country,\
-          state=person.home_state,\
-          city=person.home_city,\
-          street=home_street,\
-          postal_code=home_postal_code)
-          
+#        person.location = Distance.getlatlong(\
+#          country=person.home_country,\
+#          state=person.home_state,\
+#          city=person.home_city,\
+#          street=home_street,\
+#          postal_code=home_postal_code)
+#          
         person.put()
         
         self.response.set_status(200)

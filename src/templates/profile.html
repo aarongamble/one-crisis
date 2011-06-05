@@ -18,7 +18,8 @@
 		$(document).ready(function(){
 		//	$("#blah").fcbkcomplete({});
 		
-			$("#btnsave").click(function(){
+			$("#btnsave").click(function(evt){
+				evt.preventDefault();
 				var qs = [
 					"name=" + $("#c_name").val(),
 					"email=" + $("#c_email").val(),
@@ -27,13 +28,15 @@
 					"phone=" + $("#c_phone").val(),
 					"resource_skills="  + ($("#c_skills").val().split(",").join("&resource_skills="))
 				]
-				$.post("/profile", qs.join("&"));
+				console.log(qs.join("&"))
+				$.post("/profile", qs.join("&") + "");
 				
 				$("#main").removeClass("edit");
 				window.location.reload();
 			});
 			
-			$("#btnEdit").click(function(){
+			$("#btnEdit").click(function(evt){
+				evt.preventDefault();
 				$("#main").addClass("edit");
 			})
 		})
@@ -72,18 +75,18 @@
 						<div> 
 							<label for="contact-name"> Name</label>
 							<span> {{ person.name }}</span>
-							<input type="text" id="c_name" name="name" value="John Smith" />
+							<input type="text" id="c_name" name="name" value="{{ person.name }}" />
 						</div>
 						<div> 
 							<label for="contact-name"> Profession </label>
 							<span> {{ person.profession }} </span>
-							<input type="text" id="c_profession" name="profession" value="John Smith" />
+							<input type="text" id="c_profession" name="profession" value="{{ person.profession }}" />
 						</div>
 						<div> 
 							<label for="contact-name"> Skills </label>
 							<span> Engineering, Medicine </span>
 							
-							<input type="text" id="c_skills" name="resource_skill" value="John Smith" />
+							<input type="text" id="c_skills" name="resource_skill" value="" />
 							
 						</div>
 					</fieldset>
@@ -94,17 +97,17 @@
 				<h3> John B Smith </h3>
 				<address class="vcard">
 					<span class="adr">
-						<span class="street-address">124 12th avenue south, suite 510</span><br>
+						<span class="street-address">{{ person.address }}</span><br>
 					</span>
 					<input type="text" id="c_address" name="address"
-						 value="124 12th avenue south, suite 510" />
+						 value="{{ person.address }}" />
 					<br/>
-					<span class="tel">(615) 386-9012</span>
+					<span class="tel"> {{ person.phone }} </span>
 					<input type="text" id="c_phone" name="phone"
-						 value="(615) 386-9012" />
-					<span class="email"><a href="mailto:jsmith@gmail.com">jsmith@gmail.com</a></span><br>
+						 value="{{ person.phone }}" />
+					<span class="email"><a href="mailto:{{ person.email }}"> {{ person.email }}</a></span><br>
 					<input type="text" id="c_email" name="email"
-						 value="jsmith@gmail.com" />
+						 value="{{ person.email }}" />
 					<span class="dl-vcard"><a href="/content/misc/pr.vcf" rel="external" title="Add us to your address book">Download v<strong>card</strong></a></span>
 				</address>
 				
