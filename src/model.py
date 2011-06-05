@@ -51,7 +51,7 @@ class Person(Base):
     photo_url = db.TextProperty(default='')
 
     #then describe the resources and limitations to that
-    resource_skill = db.StringListProperty(default='')
+    resource_skills = db.StringListProperty(default='')
     location = db.BlobProperty()
     location_street = db.StringProperty(default='')
     location_neighborhood = db.StringProperty(default='')

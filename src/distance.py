@@ -19,10 +19,10 @@ class Distance:
     distance = sqrt(sum( map( lambda x: math.pow( x, 2 ), dxyz ) ) )
     return distance
     
-  def getlatlong(country='',state='',city='',street='',street_number=''):
+  def getlatlong(country='',state='',city='',street='',street_number='',postal_code=''):
     '''Returns the location information (including latitude and longitude and bounding box) for the given location information'''
     try:
-      valid_fields = ['+'.join(field.split()) for field in [street_number,street,city,state,country] if field]
+      valid_fields = ['+'.join(field.split()) for field in [street_number,street,city,state,postal_code,country] if field]
       query = '+'.join(valid_fields)
       map_address = urllib.urlopen('https://maps.googleapis.com/maps/api/geocode/json?address='+query+'&sensor=false').read()
       info = json.loads(map_address)
