@@ -10,14 +10,14 @@
 
 	<!--[if lte IE 6]><link rel="stylesheet" href="css/ie6.css" type="text/css" media="all" /><![endif]-->
 	<!--[if IE]><style type="text/css" media="screen"> #navigation ul li a em { top:32px; } </style><![endif]-->
-	
+
 	<script src="js/jquery-1.4.1.min.js" type="text/javascript"></script>
 	<script src="js/search.js" type="text/javascript"></script>
 	<script src="js/jquery.fcbkcomplete.js" type="text/javascript"></script>
 	<script>
 		$(document).ready(function(){
 		//	$("#blah").fcbkcomplete({});
-		
+
 			$("#btnsave").click(function(evt){
 				evt.preventDefault();
 				var qs = [
@@ -33,10 +33,10 @@
 									window.location.reload();
 
 				});
-				
+
 				$("#main").removeClass("edit");
 			});
-			
+
 			$("#btnEdit").click(function(evt){
 				evt.preventDefault();
 				$("#main").addClass("edit");
@@ -65,33 +65,31 @@
 		<div class="cols">
 			<div class="cl">&nbsp;</div>
 			<div class="col-2 " >
-				
+
 				<div id="button-container">
-				<button id="btnsave" class="sexybutton" 
+				<button id="btnsave" class="sexybutton"
 					type="reset"><span><span><span class="save">Save</span></span></span></button>
 				<button id="btnEdit" class="sexybutton" type="reset"><span><span><span class="edit">Edit</span></span></span></button>
 
 				</div>
 				<form method="post" id="profile"  class="form-general profile">
 					<fieldset>
-						<div> 
+						<div>
 							<label for="contact-name"> Name</label>
 							<span> {{ person.name }}</span>
 							<input type="text" id="c_name" name="name" value="{{ person.name }}" />
 						</div>
-						<div> 
+						<div>
 							<label for="contact-name"> Profession </label>
 							<span> {{ person.profession }} </span>
 							<input type="text" id="c_profession" name="profession" value="{{ person.profession }}" />
 						</div>
-						<div> 
+						<div>
 							<label for="contact-name"> Skills </label>
-							<span> {% for skill in person.resource_skills %}
-									{{skill}}
-								{% endfor  %} </span>
-							
+							<span> {{ person.resource_skills|join:", " }} </span>
+
 							<input type="text" id="c_skills" name="resource_skill" value="{% for skill in person.resource_skills %} {{skill}} {% endfor  %}" />
-							
+
 						</div>
 					</fieldset>
 				</form>
@@ -114,9 +112,9 @@
 						 value="{{ person.email }}" />
 					<span class="dl-vcard"><a href="/content/misc/pr.vcf" rel="external" title="Add us to your address book">Download v<strong>card</strong></a></span>
 				</address>
-				
+
 			</div>
-			
+
 			<div class="cl">&nbsp;</div>
 		</div>
 	</div>
@@ -126,11 +124,11 @@
 <!-- Footer -->
 <div id="footer">
 	<div class="shell">
-		
+
 		<!-- Footer Logo -->
 		<a href="#" class="notext footer-logo">OneCrisis</a>
 		<!-- End Footer -->
-		
+
 		<!-- Footer Nav -->
 		<div class="right">
 			<p>
@@ -146,6 +144,6 @@
 	</div>
 </div>
 <!-- End Footer -->
-	
+
 </body>
 </html>

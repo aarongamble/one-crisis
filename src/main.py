@@ -1,14 +1,16 @@
-from google.appengine.ext.webapp import template
+import os
+import logging
+
 from google.appengine.ext import webapp
+from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp.util import login_required
 from google.appengine.api import users
-import os
-import logging
-from google.appengine.ext.webapp import template
-from django.utils import simplejson
-import distance
 
+from django.utils import simplejson
+
+#local imports
+import distance
 from model import *
 
 Resources = {
@@ -29,16 +31,16 @@ class MainPage(webapp.RequestHandler):
         template_values = {'resources': Resources}
         path = os.path.join(os.path.dirname(__file__), 'templates/main.html')
         self.response.out.write(template.render(path, template_values))
-        
+
 class People(webapp.RequestHandler):
-    
+
     @staticmethod
     def get_current_user_person():
         user = users.get_current_user()
         if not user:
             return None
         return People.get_user_person(user)
-    
+
     @staticmethod
     def get_user_person(user):
         person = db.Query(Person).filter('user =', user).fetch(limit=USER_PERSON_LIMIT)
@@ -46,215 +48,158 @@ class People(webapp.RequestHandler):
             return person[0] # Only one person for each user
         else:
             return None
-        
-    def get(self):
-        user = users.get_current_user()
-        
-        id = None
-        try:
-            id = int(self.request.get('id'))
-        except:
-            self.redirect('/')
-            return
-            
-        if not id:
-            self.redirect('/')
-            return
-        
-        person = Person.get_by_id(id)
-        if not person:
-            self.redirect('/')
-            return
-        
-        template_values = {'person':    person,
-                           'user':      user}
-        path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
-        self.response.out.write(template.render(path, template_values))
-        return
-
-    def post(self):
-        pass
 
 class Profile(webapp.RequestHandler):
-    @login_required
+    '''
+    Redirects user to their own profile
+    Creates one if necessary
+    '''
+
     def get(self):
-        user = users.get_current_user()
-        logging.debug(user)
-        
-        if not user:
-            #should not ever get here since we are using @login_required
-            return
-        
-        logging.debug("user")
-        logging.debug(user)
-        #Check if the user already has a person object
-        person = People.get_current_user_person()
-        
+
+        person = None
+        try:
+            person = Person.get_by_id(int(self.request.get('id')))
+        except:
+            pass
+
         if not person:
-            #Create a new Person instance for this user
-            person = Person()
-            person.name = user.nickname
-            person.email = user.email
-            person.put()
-        
+            person = People.get_current_user_person()
+            if not person:
+                self.error(404)
+                return
+
         if self.request.get('edit'):
             edit = True
         else:
             edit = False
-        
+
         template_values = {'person':    person,
                            'resources': Resources,
                            'edit':      edit}
-        
+
         path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
         self.response.out.write(template.render(path, template_values))
-        
+
+
 
     def post(self):
         user = users.get_current_user()
         if not user:
             error(403)
-        
+            return
+
         person = People.get_user_person(user)
-        if person.user != user:
+        if not person:
+            #Create a new Person instance for this user
+            person = Person()
+            person.put()
+        elif person.user != user:
             error(403)
-        
+            return
+
         request = self.request
-        
+
+
         name = request.get('name')
         if name:
             person.name = name
-            
+
         email = request.get('email')
         if email:
             person.email = email
-        address = request.get('address')
-        if address:
-            person.address = address
-        
+
+        home_address = request.get('address')
+        if home_address:
+            person.home_address = home_address
+
         phone = request.get('phone')
         if phone:
             person.phone = phone
-            
+
         home_street = request.get('home_street')
         if home_street:
             person.home_street = home_street
-        
+
         home_neighborhood = request.get('home_neighborhood')
         if home_neighborhood:
             person.home_neighborhood = home_neighborhood
-            
+
         home_city = request.get('home_city')
         if home_city:
             person.home_city = home_city
-        
+
         home_state = request.get('home_state')
         if home_state:
             person.home_state = home_state
         profession = request.get('profession')
         if profession:
             person.profession = profession
-        
+
         home_postal_code = request.get('home_postal_code')
         if home_postal_code:
             person.home_postal_code = home_postal_code
-        
+
         home_country = request.get('home_country')
         if home_country:
             person.home_country = home_country
-            
+
         photo_url = request.get('photo_url')
         if photo_url:
             person.photo_url = photo_url
-        
+
         resource_skills = request.get_all('resource_skills')
         if resource_skills:
             person.resource_skills = resource_skills
-            
-        person.location = distance.getlatlongaddr(person.address)
-          
+
+        person.location = distance.getlatlongaddr(person.home_address)
+
         person.put()
-        
+
         self.response.set_status(200)
-                           
-        '''
-        Not sure what to do with resources
-        
-        #then describe the resources and limitations to that
-        resource_skill = db.StringListProperty()
-        location_street = db.StringProperty(default='')
-        location_neighborhood = db.StringProperty(default='')
-        location_city = db.StringProperty(default='')
-        location_state = db.StringProperty(default='')
-        location_postal_code = db.StringProperty(default='')
-        location_country = db.StringListProperty()
-        '''
-        
-        
+
+
+class CreateProfile(webapp.RequestHandler):
+    @login_required
+    def get(self):
+        person = People.get_current_user_person()
+        if not person:
+            person = Person()
+            person.name = person.user.nickname()
+            person.email = person.user.email()
+            person.put()
+        self.redirect('/profile?id=' + str(person.key().id()))
+
 
 class Search(webapp.RequestHandler):
     def get(self):
         pass
 
-
-    #need to verify post name
-
     def post(self):
-        #var to hold search Items
-        emptyArray = []
+        skills = self.request.get_all('skills')
+        location = self.request.get_all('location')
 
-        #grab post data
-        #skill=doctor&skill=engineer.
-        searchSkills = self.request.get_all('skills')
-        searchLocation = self.request.get_all('location')
+        q = Person.all()
+        for s in skills:
+            q.filter('resource_skills =', s)
 
-        #searchResults =  db.Query(Person).get()
-        searchResults =  [{"id": 1, "name": "johngt", "location": "San Francisco", "matched_skills": "Engineering"}]
-        
-        results = searchResults
+        results = q.fetch(10)
 
-#       
-#
-#
-#
-#         #"id": "id1",
-#        #"name": "John Smith",
-#		#"location": "San Ramon, CA",
-#		#"matched_skills": "food, engineering"
-#
-#        # Filter by distance to query
-#        try:
-#          query_location = distance.getlatlongaddr(searchLocation)
-#          closest_people = distance.find_closest(query_location,searchResults)
-#        except: closest_people = {0: searchResults}
-#
-#                # closest_people = {distance1: [person1,person2,...], distance2: [...]}
-#       
-#       # Results is a list of dicts.  
-#       # Each dict corresponds to a person with skills matching query skills, 
-#       # The dicts are sorted in order of increasing distance to query location
-#        results = []
-#
-#        if searchResults > 0:
-#         for distance in sorted(closest_people.keys()):
-#             for person in closest_people[distance]:
-#                 results.append({"id":person.id, "name":person.name,"location":person.location, "matched_skills":person.resource_skills})
-#
-#
-#
-#
-#       
+        #"id": "id1",
+        #"name": "John Smith",
+        #"location": "San Ramon, CA",
+        #"matched_skills": "food, engineering"
 
-
-        if len(results) > 0:
-           # return  self.response.out.write(simplejson.dumps(results))
-            self.response.out.write(simplejson.dumps(results))
-
+        if results:
+            self.response.out.write(simplejson.dumps(
+                [{'id':             p.key().id(),
+                  'name':           p.name,
+                  'location':       p.home_location,
+                  'matched_skills': p.resource_skills} for p in results]))
         else:
-            return  self.response.out.write(emptyArray)
+            self.response.out.write('')
 
-        
-
+        return
 
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
@@ -262,6 +207,7 @@ def main():
                                      [('/', MainPage),
                                       ('/people', People),
                                       ('/profile', Profile),
+                                      ('/createprofile', CreateProfile),
                                       ('/search', Search)],
                                      debug=True)
     run_wsgi_app(application)
