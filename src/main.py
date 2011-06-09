@@ -25,11 +25,12 @@ limit one person to each user
 the entire code base uses this assumption
 '''
 USER_PERSON_LIMIT = 1
+TEMPLATES_DIR = "templates"
 
 class MainPage(webapp.RequestHandler):
     def get(self):
         template_values = {'resources': Resources}
-        path = os.path.join(os.path.dirname(__file__), 'templates/main.html')
+        path = os.path.join(os.path.dirname(__file__), TEMPLATES_DIR + '/main.html')
         self.response.out.write(template.render(path, template_values))
 
 class People(webapp.RequestHandler):
@@ -78,7 +79,7 @@ class Profile(webapp.RequestHandler):
                            'resources': Resources,
                            'edit':      edit}
 
-        path = os.path.join(os.path.dirname(__file__), 'templates/profile.html')
+        path = os.path.join(os.path.dirname(__file__), TEMPLATES_DIR + '/profile.html')
         self.response.out.write(template.render(path, template_values))
 
 
@@ -168,7 +169,7 @@ class CreateProfile(webapp.RequestHandler):
             person.name = person.user.nickname()
             person.email = person.user.email()
             person.put()
-        self.redirect('/profile?id=' + str(person.key().id()))
+        self.redirect('/profile')
 
 
 class Search(webapp.RequestHandler):
