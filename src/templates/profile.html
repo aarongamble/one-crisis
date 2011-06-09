@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block head %}
+	<link rel="stylesheet" href="css/buttons.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="css/profile.css" type="text/css" media="all" />
+
+	<script src="js/jquery-1.4.1.min.js" type="text/javascript"></script>
+	<script src="js/search.js" type="text/javascript"></script>
+
+	<script>
+	$(document).ready(function(){
+		//	$("#blah").fcbkcomplete({});
+
+		$("#btnsave").click(function(evt){
+			evt.preventDefault();
+			var qs = [
+				"name=" + $("#c_name").val(),
+				"email=" + $("#c_email").val(),
+				"profession=" + $("#c_profession").val(),
+				"address=" + $("#c_address").val(),
+				"phone=" + $("#c_phone").val(),
+				"resource_skills="  + ($("#c_skills").val().split(",").join("&resource_skills="))
+			]
+			//console.log(qs.join("&"))
+			$.post("/profile", qs.join("&") + "", function(){
+								window.location.reload();
+
+			});
+
+			$("#main").removeClass("edit");
+		});
+
+		$("#btnEdit").click(function(evt){
+			evt.preventDefault();
+			$("#main").addClass("edit");
+		})
+	})
+	</script>
+{% endblock %}
+
+{% block body %}
+<!-- Main -->
+<div id="main" class="{% if edit %} edit {% endif %}">
+	<div class="shell">
+		<!-- Cols -->
+		<div class="cols">
+			<div class="cl">&nbsp;</div>
+			<div class="col-2 " >
+
+				{% if modify %}
+				<div id="button-container">
+				<button id="btnsave" class="sexybutton"
+					type="reset"><span><span><span class="save">Save</span></span></span></button>
+				<button id="btnEdit" class="sexybutton" type="reset"><span><span><span class="edit">Edit</span></span></span></button>
+				</div>
+				{% endif %}
+				<form method="post" id="profile"  class="form-general profile">
+					<fieldset>
+						<div>
+							<label for="contact-name"> Name</label>
+							<span> {{ person.name }}</span>
+							<input type="text" id="c_name" name="name" value="{{ person.name }}" />
+						</div>
+						<div>
+							<label for="contact-name"> Profession </label>
+							<span> {{ person.profession }} </span>
+							<input type="text" id="c_profession" name="profession" value="{{ person.profession }}" />
+						</div>
+						<div>
+							<label for="contact-name"> Skills </label>
+							<span> {{ person.resource_skills|join:", " }} </span>
+
+							<input type="text" id="c_skills" name="resource_skill" value="{{ person.resource_skills|join:", "}}" />
+
+						</div>
+					</fieldset>
+				</form>
+			</div>
+			<div class="col col-last profile">
+				<img id='profileimg' src="img/male_user_icon.png" />
+				<h3> {{ person.name }} </h3>
+				<address class="vcard">
+					<span class="adr">
+						<span class="street-address">{{ person.address }}</span><br>
+					</span>
+					<input type="text" id="c_address" name="address"
+						 value="{{ person.address }}" />
+					<br/>
+					<span class="tel"> {{ person.phone }} </span>
+					<input type="text" id="c_phone" name="phone"
+						 value="{{ person.phone }}" />
+					<span class="email"><a href="mailto:{{ person.email }}"> {{ person.email }}</a></span><br>
+					<input type="text" id="c_email" name="email"
+						 value="{{ person.email }}" />
+					<span class="dl-vcard"><a href="/content/misc/pr.vcf" rel="external" title="Add us to your address book">Download v<strong>card</strong></a></span>
+				</address>
+
+			</div>
+
+			<div class="cl">&nbsp;</div>
+		</div>
+	</div>
+</div>
+<!-- End Main -->
+{% endblock %}
