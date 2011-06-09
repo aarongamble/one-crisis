@@ -202,7 +202,7 @@ class Search(Handler):
             self.post()
 
     def post(self):
-        skills = self.request.get_all('skills')
+        skills = [s.strip() for s in self.request.get_all('skills')]
         location = self.request.get_all('location')
 
         q = Person.all()
