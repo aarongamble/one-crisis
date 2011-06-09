@@ -101,11 +101,7 @@ class Profile(webapp.RequestHandler):
             return
 
         person = People.get_user_person(user)
-        if not person:
-            #Create a new Person instance for this user
-            person = Person()
-            person.put()
-        elif person.user != user:
+        if not person or person.user != user:
             error(403)
             return
 
