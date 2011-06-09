@@ -58,16 +58,25 @@ class Profile(webapp.RequestHandler):
 
     def get(self):
 
-        person = None
-        try:
-            person = Person.get_by_id(int(self.request.get('id')))
-        except:
-            pass
+        modify = False
+        id = self.request.get('id')
+        if id:
+            try:
+                person = Person.get_by_id(int(id))
+            except:
+                pass
 
-        if not person:
+            if not person:
+                # id was supplied but did not resolve to a Person
+                self.error(404)
+                self.response.out.write('404 id %s not found' %id)
+                return
+        else:
+            modify = True
             person = People.get_current_user_person()
             if not person:
                 self.error(404)
+                self.response.out.write('404 id not supplied and you do not have an account. Visit /createprofile to create a profile')
                 return
 
         if self.request.get('edit'):
@@ -77,7 +86,8 @@ class Profile(webapp.RequestHandler):
 
         template_values = {'person':    person,
                            'resources': Resources,
-                           'edit':      edit}
+                           'edit':      edit,
+                           'modify':    modify}
 
         path = os.path.join(os.path.dirname(__file__), TEMPLATES_DIR + '/profile.html')
         self.response.out.write(template.render(path, template_values))

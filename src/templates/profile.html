@@ -66,12 +66,13 @@
 			<div class="cl">&nbsp;</div>
 			<div class="col-2 " >
 
+				{% if modify %}
 				<div id="button-container">
 				<button id="btnsave" class="sexybutton"
 					type="reset"><span><span><span class="save">Save</span></span></span></button>
 				<button id="btnEdit" class="sexybutton" type="reset"><span><span><span class="edit">Edit</span></span></span></button>
-
 				</div>
+				{% endif %}
 				<form method="post" id="profile"  class="form-general profile">
 					<fieldset>
 						<div>
