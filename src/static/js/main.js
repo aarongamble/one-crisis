@@ -37,12 +37,12 @@
 				});
 			
 			$("#blah").fcbkcomplete({
-				addontab         : true,
-				onselect         : function(){
+				addontab         : true
+			/*	onselect         : function(){
 					x()
 					
 					//$.getJSON("data/sample_search_results.txt",  function(matches){
 						
-				}
+				}*/
 			});
 		})
