@@ -20,20 +20,39 @@ Resources = {
         '4' : 'Transportation',
         '5' : 'Languages'
 }
-'''
-limit one person to each user
-the entire code base uses this assumption
-'''
-USER_PERSON_LIMIT = 1
+
+
+USER_PERSON_LIMIT = 1 #limit one person to each user.
+                      #the entire code base uses this assumption
 TEMPLATES_DIR = "templates"
+APPLICATION_NAME = "Crisis Action Center"
+_DEBUG=True
 
-class MainPage(webapp.RequestHandler):
+class Handler(webapp.RequestHandler):
+    """
+    Supplies a common template generation function.
+    When you call generate(), we augment the template variables supplied with
+    the current user in the 'user' variable and the current webapp request
+    in the 'request' variable.
+    """
+    def generate(self, template_name, template_values = {}):
+        values = {
+            'request': self.request,
+            'user': users.get_current_user(),
+            'login_url': users.create_login_url(self.request.uri),
+            'logout_url': users.create_logout_url('http://%s/' % (
+                self.request.host,)),
+            'application_name': APPLICATION_NAME,}
+        values.update(template_values)
+        directory = os.path.dirname(__file__)
+        path = os.path.join(directory, os.path.join(TEMPLATES_DIR, template_name))
+        self.response.out.write(template.render(path, values, debug=_DEBUG))
+
+class MainPage(Handler):
     def get(self):
-        template_values = {'resources': Resources}
-        path = os.path.join(os.path.dirname(__file__), TEMPLATES_DIR + '/main.html')
-        self.response.out.write(template.render(path, template_values))
+        self.generate('main.html', {'resources': Resources})
 
-class People(webapp.RequestHandler):
+class People():
 
     @staticmethod
     def get_current_user_person():
@@ -50,7 +69,7 @@ class People(webapp.RequestHandler):
         else:
             return None
 
-class Profile(webapp.RequestHandler):
+class Profile(Handler):
     '''
     Redirects user to their own profile
     Creates one if necessary
@@ -89,10 +108,7 @@ class Profile(webapp.RequestHandler):
                            'edit':      edit,
                            'modify':    modify}
 
-        path = os.path.join(os.path.dirname(__file__), TEMPLATES_DIR + '/profile.html')
-        self.response.out.write(template.render(path, template_values))
-
-
+        self.generate('profile.html', template_values)
 
     def post(self):
         user = users.get_current_user()
@@ -157,7 +173,9 @@ class Profile(webapp.RequestHandler):
 
         resource_skills = request.get_all('resource_skills')
         if resource_skills:
-            person.resource_skills = [skill.strip() for skill in resource_skills]
+            person.resource_skills = [ skill.strip() \
+                                       for skill in resource_skills \
+                                       if len(skill.strip()) > 0 ]
 
         person.location = distance.getlatlongaddr(person.home_address)
 
@@ -166,7 +184,7 @@ class Profile(webapp.RequestHandler):
         self.response.set_status(200)
 
 
-class CreateProfile(webapp.RequestHandler):
+class CreateProfile(Handler):
     @login_required
     def get(self):
         person = People.get_current_user_person()
@@ -178,9 +196,10 @@ class CreateProfile(webapp.RequestHandler):
         self.redirect('/profile')
 
 
-class Search(webapp.RequestHandler):
+class Search(Handler):
     def get(self):
-        pass
+        if _DEBUG:
+            self.post()
 
     def post(self):
         skills = self.request.get_all('skills')
@@ -204,7 +223,7 @@ class Search(webapp.RequestHandler):
                   'location':       p.home_location,
                   'matched_skills': p.resource_skills} for p in results]))
         else:
-            self.response.out.write('')
+            self.response.out.write('[]')
 
         return
 
@@ -216,7 +235,7 @@ def main():
                                       ('/profile', Profile),
                                       ('/createprofile', CreateProfile),
                                       ('/search', Search)],
-                                     debug=True)
+                                     debug=_DEBUG)
     run_wsgi_app(application)
 
 if __name__ == "__main__":
