@@ -18,9 +18,17 @@
 
 <div id="header">
 	<div class="shell">
-		<h1 id="logo"><a href="#">OneCrisis</a></h1>
+		<h1 id="logo"><a href="/">OneCrisis</a></h1>
+		<h2 id="logo"><a href="/">OneCrisis</a></h2>
 		<div id="navigation">
 			<ul>
+				{% if user %}
+					<li><a>{{ user.nickname }}</a></li>
+					<li><a href="/profile">Profile<span><em></em></span></a></li>
+					<li><a href="{{ logout_url|escape }}">Logout<span><em></em></span></a></li>
+				{% else %}
+					<li><a href="{{ login_url|escape }}">Login<span><em></em></span></a></li>
+				{% endif %}
 				<li><a href="#">About<span><em></em></span></a></li>
 				<li class="last"><a href="#">Contact<span><em></em></span></a></li>
 			</ul>
