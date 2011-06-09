@@ -157,7 +157,7 @@ class Profile(webapp.RequestHandler):
 
         resource_skills = request.get_all('resource_skills')
         if resource_skills:
-            person.resource_skills = resource_skills
+            person.resource_skills = [skill.strip() for skill in resource_skills]
 
         person.location = distance.getlatlongaddr(person.home_address)
 
