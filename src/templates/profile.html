@@ -88,7 +88,7 @@
 							<label for="contact-name"> Skills </label>
 							<span> {{ person.resource_skills|join:", " }} </span>
 
-							<input type="text" id="c_skills" name="resource_skill" value="{% for skill in person.resource_skills %} {{skill}} {% endfor  %}" />
+							<input type="text" id="c_skills" name="resource_skill" value="{{ person.resource_skills|join:", "}}" />
 
 						</div>
 					</fieldset>
