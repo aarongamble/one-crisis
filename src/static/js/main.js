@@ -7,9 +7,12 @@
 				var finalQs = "skills=" + qs.join("&skills=") + "&location=" + $("#location").val();
 				
 				$.post("search", finalQs, function(matches){
-                                        var html = null;
+                                       // var html = null;
 					matches = $.parseJSON(matches);
-					for(var result in matches){
+
+                                        $("#searchResults").empty();
+
+                                        for(var result in matches){
 						var def = {
 							"profile_pic": "img/profile_128.gif"
 						}
@@ -19,15 +22,14 @@
 						var templ = "<li id='profile_{{id}}'> <img src='{{profile_pic}}' /> <div> <h5> {{name}} </h5>  <p>{{location}} </p> <p> {{matched_skills}}</p> </div> </li>"
 						var html = Mustache.to_html(templ, thisresult);
 
-                                                        
-
 
 						$("#searchResults")
 							.children("#instructions")
 								.hide("")
-								.end().empty()
+								.end()
 							.append(html).fadeIn();
 					}
+                                         
 				
 			})
 				
